@@ -12,6 +12,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { LineChart } from "@/components/charts/LineChart";
 import { BarChart } from "@/components/charts/BarChart";
+import { useLanguage } from "@/context/LanguageContext";
 
 /* ── Fix Leaflet default icon (Vite bundling issue) ── */
 // @ts-ignore
@@ -96,6 +97,7 @@ interface WeatherData {
 }
 
 export default function Weather() {
+  const { t } = useLanguage();
   const [selectedDistrict, setSelectedDistrict] = useState(DISTRICTS[0]);
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -173,11 +175,11 @@ export default function Weather() {
                   <CloudRain size={24} className="text-neutral-900 dark:text-white" />
                 </div>
                 <h1 className="text-3xl sm:text-4xl font-extrabold text-neutral-900 dark:text-white tracking-tight">
-                  Weather Analysis
+                  {t("weatherTitle")}
                 </h1>
               </div>
               <p className="text-neutral-600 dark:text-neutral-400 text-lg max-w-2xl">
-                Real-time weather data and agricultural advisories for the North Karnataka sugarcane belt.
+                {t("weatherDescription")}
               </p>
             </motion.div>
           </div>
@@ -221,7 +223,7 @@ export default function Weather() {
               animate={{ opacity: 1, x: 0 }}
               className="lg:col-span-2 bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-100 dark:border-neutral-800 shadow-lg p-6"
             >
-              <h2 className="text-sm font-bold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider mb-4">Current Weather</h2>
+              <h2 className="text-sm font-bold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider mb-4">{t("currentWeather")}</h2>
               {loading ? (
                 <div className="flex items-center justify-center h-40">
                   <RefreshCw size={24} className="animate-spin text-neutral-300" />
@@ -240,10 +242,10 @@ export default function Weather() {
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                     {[
-                      { icon: Droplets, label: "Humidity", value: `${currentWeather.relative_humidity_2m}%` },
-                      { icon: Wind, label: "Wind", value: `${currentWeather.wind_speed_10m} km/h` },
-                      { icon: CloudRain, label: "Precipitation", value: `${currentWeather.precipitation} mm` },
-                      { icon: Gauge, label: "Location", value: `${selectedDistrict.lat.toFixed(2)}°N` },
+                      { icon: Droplets, label: t("humidity"), value: `${currentWeather.relative_humidity_2m}%` },
+                      { icon: Wind, label: t("wind"), value: `${currentWeather.wind_speed_10m} km/h` },
+                      { icon: CloudRain, label: t("precipitation"), value: `${currentWeather.precipitation} mm` },
+                      { icon: Gauge, label: t("location"), value: `${selectedDistrict.lat.toFixed(2)}°N` },
                     ].map((item, i) => (
                       <div key={i} className="flex items-center gap-2 p-2 rounded-lg bg-neutral-50 dark:bg-neutral-800/50">
                         <item.icon size={14} className="text-neutral-400 flex-shrink-0" />
@@ -324,7 +326,7 @@ export default function Weather() {
               viewport={{ once: true }}
               className="bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-100 dark:border-neutral-800 shadow-lg p-6"
             >
-              <h2 className="text-sm font-bold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider mb-4">7-Day Forecast</h2>
+              <h2 className="text-sm font-bold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider mb-4">{t("sevenDayForecast")}</h2>
               <div className="grid grid-cols-7 gap-2">
                 {weather.daily.time.map((t, i) => {
                   const info = getWeatherInfo(weather.daily.weather_code[i]);

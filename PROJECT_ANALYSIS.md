@@ -58,7 +58,7 @@ The saved user is parsed from localStorage without a recovery guard. There is no
 
 ### Language and theme
 
-`src/lib/translations.ts` contains UI strings for English, Kannada, Hindi, Tamil, Telugu, and Marathi. `LanguageContext` starts in English and translates by active language, then falls back to English and finally the key. Language selection is global for the mounted app, but the current language is not persisted across reloads. `LanguageToggle` exposes all six choices.
+`src/lib/translations.ts` contains UI strings for English, Kannada, Hindi, Tamil, Telugu, and Marathi. `LanguageContext` restores the last supported choice from localStorage (or starts in English), updates the shared React context on selection, and persists changes. `LanguageToggle` exposes all six choices. Page headings and selected primary labels are wired to translations, but many content strings, chart labels, alerts, and bundled/generated article text are still English; locale regression tests cover representative page copy, not full-page translation completeness.
 
 `Navbar` owns the dark-mode toggle. It reads/writes the `theme` localStorage key and otherwise follows the browser's dark-mode preference. It provides the workspace navigation links and logout action. `Footer`, shared input/button primitives, animated backgrounds, and chart wrappers provide repeated layout and presentation.
 
@@ -79,7 +79,7 @@ The validation functions are implemented in `src/lib/validation.ts`. Sign-up req
 
 ### News and article details (`/news`, `/article/:id`)
 
-`News` starts with eight bundled articles in `src/lib/mockData.ts`. On mount it attempts `GET /api/news`; a successful response replaces the article set and reuses bundled thumbnails. A request failure leaves the sample articles available. Search filters title, excerpt, and author locally; a separate action asks the API to generate topic-specific articles. “Load more” also asks the API for another batch. The page shows four items initially and includes loading and empty-result states.
+`News` starts with eight bundled English-language articles in `src/lib/mockData.ts`. On mount it attempts `GET /api/news`; a successful response replaces the article set and reuses bundled thumbnails. A request failure leaves the sample articles available. Search filters title, excerpt, and author locally; a separate action asks the API to generate topic-specific articles. “Load more” also asks the API for another batch. The page heading, search placeholder, and primary controls use the selected locale, but article titles, summaries, and bodies remain in the language supplied by the content source (currently English).
 
 `ArticleDetail` reads an article passed in router state or falls back to a bundled article with the route ID. Unknown IDs render a not-found message and a back-to-news action. Article bodies are split into paragraphs and formatted from simple markdown-like lines; this is not a general Markdown renderer. Generated AI articles may be available through navigation state but are not persisted for a later direct URL visit.
 
@@ -133,7 +133,7 @@ The Express server uses Helmet, permissive default CORS, and JSON request parsin
 | `test_case_table.md` | Manual test case catalogue for the wider UI |
 | `TESTING.md` | Test commands and recorded results |
 
-At the preceding verification run, the unit suite passed **15/15** and Stryker killed **84/84** mutants (100% mutation score, 0 survivors, 0 equivalent mutants identified). These results cover the validation module and do not constitute full application or backend coverage. Playwright specs exist, but the Playwright config expects a separately started server at `http://localhost:5173`; it does not start it automatically.
+At the current verification run, the unit suite passed **21/21** (15 validation tests and 6 locale coverage tests), Stryker killed **84/84** mutants in `validation.ts` (100% mutation score), and Playwright passed **26/26** browser tests (serial execution). These results do not constitute full application or backend coverage. The Playwright config expects a separately started server at `http://localhost:5173`; it does not start it automatically.
 
 ## 8. Configuration and important files
 
@@ -158,7 +158,8 @@ At the preceding verification run, the unit suite passed **15/15** and Stryker k
 4. **Weather/network dependency:** The weather page calls Open-Meteo directly. Error states depend on connectivity and API availability.
 5. **AI news dependency:** Gemini key/configuration and upstream availability are required for generated news. Validate and bound user query input and validate the returned JSON before using it.
 6. **Deployment split:** Vercel rewrites frontend paths only. Configure/deploy the Express API separately and set `VITE_API_URL` to that API origin in production.
-7. **Test coverage:** Automated unit tests cover only validation logic; E2E coverage is limited to the named journeys. Backend routes, weather, inventory, analysis, and simulated IoT logic have no test suite listed in the repository.
+7. **Localization coverage:** Six locales are available and representative page labels are covered by unit/E2E tests, but full-page localization is incomplete. Article bodies and much of the dashboard, weather advisories, inventory data, sensor alerts, chart annotations, and report tables remain English.
+8. **Test coverage:** Automated unit tests cover validation and selected locale strings; E2E coverage is limited to the named journeys and representative language checks. Backend routes, weather, inventory, analysis, and simulated IoT logic have no test suite listed in the repository.
 
 ## 10. Repository hygiene
 

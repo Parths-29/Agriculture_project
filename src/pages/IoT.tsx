@@ -12,6 +12,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { GaugeChart } from "@/components/charts/GaugeChart";
 import { LineChart } from "@/components/charts/LineChart";
+import { useLanguage } from "@/context/LanguageContext";
 
 /* ── Sensor Types & Config ── */
 interface SensorReading {
@@ -217,6 +218,7 @@ function generateAlerts(sensors: Sensor[]): Alert[] {
 }
 
 export default function IoT() {
+  const { t } = useLanguage();
   const [sensors, setSensors] = useState<Sensor[]>(createInitialSensors);
   const [selectedSensor, setSelectedSensor] = useState<Sensor | null>(null);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
@@ -276,11 +278,11 @@ export default function IoT() {
                   <Cpu size={24} className="text-neutral-900 dark:text-white" />
                 </div>
                 <h1 className="text-3xl sm:text-4xl font-extrabold text-neutral-900 dark:text-white tracking-tight">
-                  IoT Monitoring
+                  {t("iotTitle")}
                 </h1>
               </div>
               <p className="text-neutral-600 dark:text-neutral-400 text-lg max-w-2xl">
-                Real-time sensor network monitoring — soil moisture, temperature, pH, water flow, and environmental data across all plots.
+                {t("iotDescription")}
               </p>
             </motion.div>
           </div>
@@ -290,11 +292,11 @@ export default function IoT() {
           {/* Network Status Bar */}
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
             {[
-              { icon: Server, label: "Total Sensors", value: sensors.length.toString(), gradient: "from-neutral-600 to-neutral-700" },
-              { icon: Wifi, label: "Online", value: onlineCount.toString(), gradient: "from-green-500 to-emerald-600" },
-              { icon: AlertTriangle, label: "Warning", value: warningCount.toString(), gradient: "from-amber-500 to-orange-600" },
-              { icon: WifiOff, label: "Offline", value: offlineCount.toString(), gradient: "from-red-500 to-red-600" },
-              { icon: Bell, label: "Active Alerts", value: criticalAlerts.length.toString(), gradient: "from-red-600 to-pink-600" },
+              { icon: Server, label: t("totalSensors"), value: sensors.length.toString(), gradient: "from-neutral-600 to-neutral-700" },
+              { icon: Wifi, label: t("online"), value: onlineCount.toString(), gradient: "from-green-500 to-emerald-600" },
+              { icon: AlertTriangle, label: t("warning"), value: warningCount.toString(), gradient: "from-amber-500 to-orange-600" },
+              { icon: WifiOff, label: t("offline"), value: offlineCount.toString(), gradient: "from-red-500 to-red-600" },
+              { icon: Bell, label: t("activeAlerts"), value: criticalAlerts.length.toString(), gradient: "from-red-600 to-pink-600" },
             ].map((card, i) => (
               <motion.div
                 key={card.label}
@@ -326,10 +328,10 @@ export default function IoT() {
                 <div className="p-4">
                   <div className="flex items-center justify-between mb-3">
                     <h3 className="text-sm font-bold text-red-800 dark:text-red-300 flex items-center gap-2">
-                      <AlertTriangle size={16} /> Active Alerts ({criticalAlerts.length})
+                      <AlertTriangle size={16} /> {t("activeAlerts")} ({criticalAlerts.length})
                     </h3>
                     <button onClick={() => setShowAlerts(false)} className="text-xs text-red-500 hover:text-red-700">
-                      Dismiss
+                      {t("dismiss")}
                     </button>
                   </div>
                   <div className="space-y-2">
@@ -370,7 +372,7 @@ export default function IoT() {
                       : "text-neutral-500 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-700"
                   }`}
                 >
-                  {p === "All" ? "All Plots" : `Plot ${p}`}
+                  {p === "All" ? t("allPlots") : `Plot ${p}`}
                 </button>
               ))}
             </div>
@@ -394,7 +396,7 @@ export default function IoT() {
             {/* Live indicator */}
             <div className="flex items-center gap-1.5 text-xs text-green-600 dark:text-green-400 font-semibold">
               <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              LIVE — Updates every 5s
+              {t("liveUpdates")}
             </div>
           </div>
 
@@ -406,7 +408,7 @@ export default function IoT() {
             className="bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-100 dark:border-neutral-800 shadow-lg p-6"
           >
             <h2 className="text-sm font-bold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider mb-6">
-              Key Metrics — Real-Time Gauges
+              {t("keyMetrics")}
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
               {sensors.filter((s) => s.status !== "offline").slice(0, 6).map((sensor) => (
@@ -579,7 +581,7 @@ export default function IoT() {
 
                   {/* Device Details */}
                   <div>
-                    <h3 className="text-sm font-bold text-neutral-700 dark:text-neutral-300 mb-3">Device Information</h3>
+                    <h3 className="text-sm font-bold text-neutral-700 dark:text-neutral-300 mb-3">{t("deviceInformation")}</h3>
                     <div className="space-y-2">
                       {[
                         { label: "Sensor ID", value: selectedSensor.id },
@@ -663,7 +665,7 @@ export default function IoT() {
             {alerts.length === 0 ? (
               <div className="text-center py-8">
                 <CheckCircle2 size={32} className="mx-auto mb-2 text-green-400" />
-                <p className="text-sm text-neutral-500">All systems normal. No alerts.</p>
+                <p className="text-sm text-neutral-500">{t("noAlerts")}</p>
               </div>
             ) : (
               <div className="space-y-2 max-h-[300px] overflow-y-auto">

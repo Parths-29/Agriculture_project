@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { useLanguage } from "@/context/LanguageContext";
 
 /* ── Types ── */
 interface InventoryItem {
@@ -53,6 +54,7 @@ function loadInventory(): InventoryItem[] {
 }
 
 export default function Inventory() {
+  const { t } = useLanguage();
   const [items, setItems] = useState<InventoryItem[]>(loadInventory);
   const [showForm, setShowForm] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -167,11 +169,11 @@ export default function Inventory() {
                   <Package size={24} className="text-neutral-900 dark:text-white" />
                 </div>
                 <h1 className="text-3xl sm:text-4xl font-extrabold text-neutral-900 dark:text-white tracking-tight">
-                  Inventory Management
+                  {t("inventoryTitle")}
                 </h1>
               </div>
               <p className="text-neutral-600 dark:text-neutral-400 text-lg max-w-2xl">
-                Track fertilizers, seeds, machinery, and other farming supplies for your sugarcane plots.
+                {t("inventoryDescription")}
               </p>
             </motion.div>
           </div>
@@ -217,7 +219,7 @@ export default function Inventory() {
               <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" />
               <input
                 type="text"
-                placeholder="Search inventory..."
+                placeholder={t("searchInventory")}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
@@ -227,7 +229,7 @@ export default function Inventory() {
               onClick={() => { resetForm(); setShowForm(true); }}
               className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-green-600 hover:bg-green-700 text-white text-sm font-semibold transition-colors shadow-lg shadow-green-600/20"
             >
-              <Plus size={16} /> Add Item
+              <Plus size={16} /> {t("addItem")}
             </button>
           </div>
 
@@ -280,7 +282,7 @@ export default function Inventory() {
           {filtered.length === 0 && (
             <div className="text-center py-12 text-neutral-400 dark:text-neutral-500">
               <Package size={40} className="mx-auto mb-3 opacity-50" />
-              <p className="text-sm">No inventory items found.</p>
+              <p className="text-sm">{t("noInventoryItems")}</p>
             </div>
           )}
         </div>
@@ -305,7 +307,7 @@ export default function Inventory() {
             >
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-lg font-bold text-neutral-900 dark:text-white">
-                  {editingItem ? "Edit Item" : "Add New Item"}
+                  {editingItem ? t("editItem") : t("addNewItem")}
                 </h2>
                 <button onClick={() => { setShowForm(false); resetForm(); }} className="p-1 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg">
                   <X size={18} className="text-neutral-400" />

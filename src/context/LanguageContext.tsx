@@ -10,11 +10,20 @@ interface LanguageContextType {
 const LanguageContext = createContext<LanguageContextType | null>(null);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguage] = useState<Language>("en");
+  const [language, setLanguageState] = useState<Language>(() => {
+    const saved = localStorage.getItem("language") as Language | null;
+    return saved && Object.hasOwn(translations, saved) ? saved : "en";
+  });
+
+  const setLanguage = useCallback((nextLanguage: Language) => {
+    setLanguageState(nextLanguage);
+    localStorage.setItem("language", nextLanguage);
+  }, []);
 
   const t = useCallback(
     (key: TranslationKey): string => {
-      return translations[language][key] || translations.en[key] || key;
+      const localized = translations[language] as Partial<Record<TranslationKey, string>>;
+      return localized[key] || translations.en[key] || key;
     },
     [language]
   );

@@ -6,7 +6,7 @@ A concise reference for viva examination explaining the automated testing layers
 
 ## 1. Unit Testing (Vitest)
 
-- **What's Tested**: Pure client-side form validation logic in [`src/lib/validation.ts`](file:///c:/Users/Admin/Desktop/Agri/Agriculture_project/src/lib/validation.ts) across `validateSignUp()` and `validateLogin()`.
+- **What's Tested**: Pure client-side form validation logic in `src/lib/validation.ts` across `validateSignUp()` and `validateLogin()`, plus core page-label coverage for all six supported locales in `src/lib/__tests__/translations.test.ts`.
   - **Sign Up Rules**: Empty Name (SU-01), Empty Phone (SU-02), Non-numeric Phone (SU-03), Phone not 10 digits (SU-04), Empty Password (SU-05), Password < 6 chars (SU-06), Empty Confirm Password (SU-07), Password Mismatch (SU-08), All Fields Empty (SU-09), and Valid Sign-Up (SU-10).
   - **Login Rules**: Empty Phone (LI-01), Empty Password (LI-02), and Valid Login Input (LI-03).
 - **Execution Command**:
@@ -14,7 +14,7 @@ A concise reference for viva examination explaining the automated testing layers
   npm run test:unit
   ```
 - **Framework**: Vitest (minimal, fast, isolated Node-like runner).
-- **Result**: **15 / 15 Passed** (1 test file, 15 tests, ~1.5s execution time).
+- **Result**: **21 / 21 Passed** (2 test files: 15 validation cases and 6 locale-coverage cases).
 
 ---
 
@@ -24,13 +24,14 @@ A concise reference for viva examination explaining the automated testing layers
   - **Sign Up Validation (`e2e/signup.spec.ts`)**: SU-01 through SU-06 (in-browser inline field errors for empty name/phone, letters in phone, invalid length, short password, mismatched passwords) and SU-07 (duplicate phone registration error).
   - **Authentication Flow (`e2e/login.spec.ts`)**: LI-01 & LI-02 (required phone/password validation), LI-04 (unregistered phone number error), LI-05 (wrong password error), and LI-07 (successful login with `9876543210` / `ramesh123` redirecting to `/home` with user greeting).
   - **Route Guards & Session (`e2e/guards-and-logout.spec.ts`)**: CC-01 & CC-03 (unauthenticated access to `/home`, `/news`, and `/article/1` redirects to `/login`), CC-04 (authenticated access preserved), and HM-07 (clicking Logout in Navbar clears `localStorage` session and redirects to `/login`).
+  - **Language Switching (`e2e/language.spec.ts`)**: Changes the language to Kannada on all 11 routes (including Landing, sign-up/login, Home, News/article details, Analysis, Weather, Inventory, IoT, and Reports); checks a page heading and/or representative control, then reloads to check persistence on protected pages. These checks do not claim every article, alert, or chart label is translated.
 - **Prerequisite**: Start dev and backend servers (`npm run dev` or separate terminals).
 - **Execution Command**:
   ```bash
   npm run test:e2e
   ```
 - **Framework**: Playwright (`@playwright/test`) with Chromium headless runner and list reporter.
-- **Result**: **17 / 17 Passed** (3 test files, 17 tests, ~28s execution time).
+- **Result**: **26 / 26 Passed** (4 spec files: signup, login, route guards/logout, and language switching).
 
 ---
 

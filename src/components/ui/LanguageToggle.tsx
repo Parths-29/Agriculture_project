@@ -11,11 +11,13 @@ const LANGUAGES: { code: Language; label: string }[] = [
 ];
 
 export function LanguageToggle() {
-  const { language, setLanguage } = useLanguage();
+  const { language, setLanguage, t } = useLanguage();
 
   return (
     <div className="relative flex items-center bg-white/60 backdrop-blur-sm rounded-lg border border-green-200 shadow-sm">
       <select
+        data-testid="language-selector"
+        aria-label={t("language")}
         value={language}
         onChange={(e) => setLanguage(e.target.value as Language)}
         className="appearance-none bg-transparent py-2 pl-3 pr-8 text-sm font-semibold text-green-800 outline-none focus:ring-2 focus:ring-green-500 rounded-lg w-full cursor-pointer"

@@ -5,6 +5,8 @@ import { AuroraBackground } from "@/components/ui/aurora-background";
 import { useAuth } from "@/context/AuthContext";
 import { Navigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useLanguage } from "@/context/LanguageContext";
+import { LanguageToggle } from "@/components/ui/LanguageToggle";
 
 const features = [
   { icon: Sprout, title: "Yield Tracking", delay: 0.2 },
@@ -14,6 +16,7 @@ const features = [
 
 export default function Landing() {
   const { currentUser } = useAuth();
+  const { t } = useLanguage();
 
   if (currentUser) {
     return <Navigate to="/home" replace />;
@@ -21,6 +24,7 @@ export default function Landing() {
 
   return (
     <AuroraBackground showRadialGradient={true}>
+      <div className="absolute top-5 right-5 z-20"><LanguageToggle /></div>
       <div className="relative z-10 w-full max-w-[1200px] px-4 flex flex-col lg:flex-row items-center justify-between gap-12 mt-10">
         
         {/* Left Side: Main Content */}
@@ -31,7 +35,7 @@ export default function Landing() {
             transition={{ duration: 0.8 }}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 border border-green-500/20 text-green-300 text-sm font-semibold mb-6 backdrop-blur-sm"
           >
-            <Leaf size={16} /> Welcome to the future of farming
+            <Leaf size={16} /> {t("landingWelcome")}
           </motion.div>
           
           <h1 className="text-5xl sm:text-6xl lg:text-8xl font-black text-white tracking-tight drop-shadow-2xl mb-6 leading-tight">
@@ -39,13 +43,13 @@ export default function Landing() {
           </h1>
           
           <p className="text-lg sm:text-2xl text-neutral-300 font-medium max-w-2xl drop-shadow-md mb-10 leading-relaxed">
-            The intelligent ecosystem for sugarcane farming. Manage your inventory, analyze yields, monitor weather, and maximize your farm's potential.
+            {t("landingDescription")}
           </p>
 
           <div className="flex flex-col sm:flex-row items-center lg:items-start gap-6">
             <Link to="/signup">
               <LiquidGlassButton className="w-48 text-lg hover:text-green-100">
-                Get Started
+                {t("getStarted")}
               </LiquidGlassButton>
             </Link>
             <Link to="/login">
@@ -59,7 +63,7 @@ export default function Landing() {
         {/* Right Side: Glass Widgets */}
         <div className="flex-1 w-full max-w-lg relative">
           <LiquidGlassContainer className="p-8">
-            <h3 className="text-2xl font-bold text-white mb-6 tracking-tight">Powerful Features</h3>
+            <h3 className="text-2xl font-bold text-white mb-6 tracking-tight">{t("powerfulFeatures")}</h3>
             <div className="space-y-4">
               {features.map((feature, idx) => (
                 <motion.div 
@@ -74,7 +78,7 @@ export default function Landing() {
                   </div>
                   <div>
                     <h4 className="text-lg font-bold text-white">{feature.title}</h4>
-                    <p className="text-sm text-neutral-400">Real-time insights & data</p>
+                    <p className="text-sm text-neutral-400">{t("liveInsights")}</p>
                   </div>
                 </motion.div>
               ))}

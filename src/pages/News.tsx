@@ -146,7 +146,7 @@ export default function News() {
         {isLoadingNews && (
           <div className="flex justify-center items-center py-10">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-500"></div>
-            <span className="ml-3 text-neutral-500">Generating live news...</span>
+            <span className="ml-3 text-neutral-500">{t("generatingLiveNews")}</span>
           </div>
         )}
 
@@ -167,7 +167,7 @@ export default function News() {
               Would you like the AI to generate live news about this topic?
             </p>
             <Button onClick={handleGenerateSearch} disabled={isLoadingNews}>
-              {isLoadingNews ? "Generating..." : `Generate News for "${searchQuery}"`}
+              {isLoadingNews ? t("newsGenerating") : `${t("generateNewsFor")} "${searchQuery}"`}
             </Button>
           </motion.div>
         ) : (
@@ -227,7 +227,7 @@ export default function News() {
                   onClick={handleLoadMore}
                   disabled={isLoadingMore}
                 >
-                  {isLoadingMore ? "Generating..." : t("loadMore")}
+                  {isLoadingMore ? t("newsGenerating") : t("loadMore")}
                 </Button>
               </div>
             )}

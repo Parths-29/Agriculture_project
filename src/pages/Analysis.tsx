@@ -9,6 +9,7 @@ import { Footer } from "@/components/Footer";
 import { PieChart } from "@/components/charts/PieChart";
 import { BarChart } from "@/components/charts/BarChart";
 import { LineChart } from "@/components/charts/LineChart";
+import { useLanguage } from "@/context/LanguageContext";
 
 /* ── Agri-science constants ── */
 const VARIETIES = [
@@ -87,6 +88,7 @@ function SelectField({ label, value, onChange, options }: {
 }
 
 export default function Analysis() {
+  const { t } = useLanguage();
   const [plotArea, setPlotArea] = useState(5);
   const [variety, setVariety] = useState(VARIETIES[0].name);
   const [soil, setSoil] = useState(Object.keys(SOIL_FACTORS)[0]);
@@ -159,11 +161,11 @@ export default function Analysis() {
                   <Beaker size={24} className="text-neutral-900 dark:text-white" />
                 </div>
                 <h1 className="text-3xl sm:text-4xl font-extrabold text-neutral-900 dark:text-white tracking-tight">
-                  Sugarcane Analysis
+                  {t("analysisTitle")}
                 </h1>
               </div>
               <p className="text-neutral-600 dark:text-neutral-400 text-lg max-w-2xl">
-                Real-time yield prediction, sugar recovery calculations, and cost-benefit analysis powered by agronomic science.
+                {t("analysisDescription")}
               </p>
             </motion.div>
           </div>
@@ -186,7 +188,7 @@ export default function Analysis() {
                   <Calculator size={20} className="text-white" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-neutral-900 dark:text-white">Yield Prediction Calculator</h2>
+                  <h2 className="text-lg font-bold text-neutral-900 dark:text-white">{t("yieldCalculator")}</h2>
                   <p className="text-xs text-neutral-500 dark:text-neutral-400">Based on Karnataka agricultural research data</p>
                 </div>
               </div>
@@ -202,7 +204,7 @@ export default function Analysis() {
               >
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
                   <div>
-                    <label className="block text-xs font-semibold text-neutral-500 dark:text-neutral-400 mb-1.5">Plot Area (Acres)</label>
+                    <label className="block text-xs font-semibold text-neutral-500 dark:text-neutral-400 mb-1.5">{t("plotArea")}</label>
                     <input
                       type="number"
                       value={plotArea}
@@ -212,10 +214,10 @@ export default function Analysis() {
                       step={0.5}
                     />
                   </div>
-                  <SelectField label="Variety" value={variety} onChange={setVariety} options={VARIETIES.map((v) => v.name)} />
-                  <SelectField label="Soil Type" value={soil} onChange={setSoil} options={Object.keys(SOIL_FACTORS)} />
-                  <SelectField label="Irrigation Method" value={irrigation} onChange={setIrrigation} options={Object.keys(IRRIGATION_FACTORS)} />
-                  <SelectField label="Season / Planting" value={season} onChange={setSeason} options={Object.keys(SEASON_FACTORS)} />
+                  <SelectField label={t("variety")} value={variety} onChange={setVariety} options={VARIETIES.map((v) => v.name)} />
+                  <SelectField label={t("soilType")} value={soil} onChange={setSoil} options={Object.keys(SOIL_FACTORS)} />
+                  <SelectField label={t("irrigationMethod")} value={irrigation} onChange={setIrrigation} options={Object.keys(IRRIGATION_FACTORS)} />
+                  <SelectField label={t("seasonPlanting")} value={season} onChange={setSeason} options={Object.keys(SEASON_FACTORS)} />
                 </div>
 
                 {/* Formula Display */}
@@ -272,7 +274,7 @@ export default function Analysis() {
                   <Beaker size={20} className="text-white" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-neutral-900 dark:text-white">Sugar Recovery (CCS) Analysis</h2>
+                  <h2 className="text-lg font-bold text-neutral-900 dark:text-white">{t("sugarRecoveryAnalysis")}</h2>
                   <p className="text-xs text-neutral-500 dark:text-neutral-400">Commercial Cane Sugar calculation — Indian mills formula</p>
                 </div>
               </div>
@@ -358,7 +360,7 @@ export default function Analysis() {
                   <IndianRupee size={20} className="text-white" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-neutral-900 dark:text-white">Cost-Benefit Analysis</h2>
+                  <h2 className="text-lg font-bold text-neutral-900 dark:text-white">{t("costBenefitAnalysis")}</h2>
                   <p className="text-xs text-neutral-500 dark:text-neutral-400">Input costs vs. expected revenue — ROI calculation</p>
                 </div>
               </div>

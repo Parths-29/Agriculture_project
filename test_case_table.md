@@ -95,7 +95,7 @@
 | Test ID | Feature | Input | Expected Result | Actual Result | Pass/Fail |
 |---------|---------|-------|-----------------|---------------|-----------|
 | CC-01 | Route guard all protected routes | Visit /home, /news, /article/1 without login | All redirect to /login | | |
-| CC-02 | Language persists across pages | Set language to Kannada, navigate all pages | Kannada labels persist on all pages | | |
+| CC-02 | Language switching and persistence | Change language to Kannada across public/auth pages and the 8 workspace routes; reload protected pages | Page heading and representative control use Kannada and the selected language persists | | |
 | CC-03 | Root redirect unauthenticated | Visit / without login | Redirects to /login | | |
 | CC-04 | Root redirect authenticated | Visit / while logged in | Redirects to /home | | |
 | CC-05 | Catch-all route | Visit /nonexistent | Redirects to / then to /login or /home | | |
