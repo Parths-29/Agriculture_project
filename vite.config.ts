@@ -17,4 +17,9 @@ export default defineConfig({
       },
     },
   },
+  // Vitest configuration — runs unit tests in a Node-like environment
+  test: {
+    environment: 'node',
+    include: ['src/**/__tests__/**/*.test.ts'],
+  },
 })

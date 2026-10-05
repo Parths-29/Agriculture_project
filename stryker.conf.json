@@ -1,0 +1,18 @@
+{
+  "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "_comment": "StrykerJS configuration for DesiCane validation logic mutation testing",
+  "testRunner": "vitest",
+  "mutate": [
+    "src/lib/validation.ts"
+  ],
+  "reporters": [
+    "progress",
+    "clear-text",
+    "html"
+  ],
+  "htmlReporter": {
+    "fileName": "reports/mutation/mutation.html"
+  },
+  "concurrency": 4,
+  "coverageAnalysis": "perTest"
+}

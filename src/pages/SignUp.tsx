@@ -58,7 +58,6 @@ export default function SignUp() {
         navigate("/login");
       }, 2000);
     } catch (err: any) {
-      alert(`Signup Error: ${err.message}`);
       setErrors({ phone: "duplicatePhone" as TranslationKey });
     }
   };

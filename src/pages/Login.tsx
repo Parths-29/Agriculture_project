@@ -63,9 +63,8 @@ export default function Login() {
       } catch (err: any) {
         setLoading(false);
         setFailCount((prev) => prev + 1);
-        alert(`Login Error: ${err.message}`);
         
-        if (err.message.includes('password')) {
+        if (err.message && err.message.toLowerCase().includes('password')) {
           setErrors({ password: "incorrectPassword" as TranslationKey });
         } else {
           setErrors({ phone: "noAccountFound" as TranslationKey });

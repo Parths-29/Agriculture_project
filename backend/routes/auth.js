@@ -39,12 +39,12 @@ router.post('/login', async (req, res) => {
 
     const user = await User.findOne({ phone });
     if (!user) {
-      return res.status(401).json({ message: 'Invalid phone or password' });
+      return res.status(401).json({ message: 'No account found with this phone number' });
     }
 
     // Check password
     if (user.password !== password) {
-      return res.status(401).json({ message: 'Invalid phone or password' });
+      return res.status(401).json({ message: 'Incorrect password' });
     }
 
     res.status(200).json({ message: 'Login successful', user });
